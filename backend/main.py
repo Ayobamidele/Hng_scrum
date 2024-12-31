@@ -1,6 +1,9 @@
 from fastapi import FastAPI, status
 from api.v1.routes import api_version_one
-from api.utils import success_response
+from api.utils import success_response, settings
+from api.v1.models import Base
+from api.db.database import engine
+
 
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,7 +13,15 @@ origins = [
 	"http://localhost:8000"
 ]
 
-app = FastAPI()
+
+def create_tables():         
+	Base.metadata.create_all(bind=engine)
+        
+
+
+
+create_tables()
+app = FastAPI(title=settings.PROJECT_NAME,version=settings.PROJECT_VERSION)
 app.include_router(api_version_one)
 
 

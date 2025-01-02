@@ -1,7 +1,7 @@
 # Hng_scrum
 
 ## Project Overview
-#### Welcome to the Hng_scrum repository! This project follows a structured branching workflow to streamline development, testing, and deployment. The repository includes both backend and frontend components, with the following technologies:
+#### This project follows a structured branching workflow to streamline development, testing, and deployment. The repository includes both backend and frontend components, with the following technologies:
 
 #### Languages: TypeScript (94.9%), Python (4.4%), Others (0.7%)
 #### Repository URL: GitHub - Anniedevkiller/Hng_scrum

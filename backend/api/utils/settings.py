@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent
 
 
 class Settings(BaseSettings):
+    ENV: str = config("ENVIRONMENT", "dev")
     PROJECT_NAME:str = "Monika Verein API"
     PROJECT_VERSION: str = "1.0.0"
 
@@ -24,5 +25,10 @@ class Settings(BaseSettings):
     STRIPE_CANCEL_URL : str = config("STRIPE_CANCEL_URL")
 
     TEST_MODE_ACTIVE : bool = config("TEST_MODE_ACTIVE")
+
+    BITPAY_API_TOKEN : str = config("BITPAY_API_TOKEN")
+    NOTIFICATION_EMAIL : str = config("NOTIFICATION_EMAIL")
+    NOTIFICATION_URL : str = config("NOTIFICATION_URL")
+    MERCHANT_NAME: str = config("MERCHANT_NAME", "HNG SCRUM")
 
 settings = Settings()

@@ -17,6 +17,6 @@ DB_URL=postgresql://username:password@localhost:5432/test
 DB_TYPE=sqlite
 
 # Bitpay configuration
-BITPAY_API_TOKEN=DicYYq6RPjx9A5i1zhME5RFhgoLKHq8FvYTcgzT73ap4
-NOTIFICATION_URL=null
-NOTIFICATION_EMAIL=chukssomzzy+4@gmail.com
+BITPAY_API_TOKEN=
+NOTIFICATION_URL=
+NOTIFICATION_EMAIL=

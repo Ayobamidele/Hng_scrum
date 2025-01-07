@@ -75,7 +75,7 @@ class StripeService:
             # Extract payment details
             customer_email = session.get("customer_email")
             amount_total = session.get("amount_total")
-
+            print(session)
             return {
                 "session_id": session_id,
                 "customer_email": customer_email,
@@ -83,7 +83,6 @@ class StripeService:
             }
         except st.error.StripeError as e:
             raise HTTPException(status_code=500, detail=f"Stripe API error: {e.user_message or str(e)}")
-
 
         
 stripe_service = StripeService()

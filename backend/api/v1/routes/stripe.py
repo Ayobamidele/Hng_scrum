@@ -1,5 +1,5 @@
-from fastapi import APIRouter, Request, HTTPException
-from api.utils import success_response
+from fastapi import APIRouter, Request
+from api.utils import success_response, get_user_currency_from_ip
 from api.v1.schemas.stripe import DonationRequest
 from api.v1.services.stripe import stripe_service
 
@@ -9,10 +9,10 @@ stripe_donation = APIRouter(prefix="/stripe", tags=["Stripe"])
 
 @stripe_donation.post("/donate")
 async def create_donation_session_endpoint(donation: DonationRequest):
-    session_info = stripe_service.create_checkout_session(donation.amount, donation.currency, donation.email)   
+    session_info = stripe_service.create_checkout_session(donation.amount, get_user_currency_from_ip(), donation.email)   
     return success_response(
         200,
-        "Donation Successful",
+        "Donation Session Created Successful",
         session_info
     )
 

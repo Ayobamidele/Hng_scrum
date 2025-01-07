@@ -45,14 +45,9 @@ class StripeService:
                 ],
                 submit_type="donate",
                 mode="payment",  
-                # success_url=config('STRIPE_SUCCESS_URL'),
-                # cancel_url=config('STRIPE_CANCEL_URL'),
+                success_url=config('STRIPE_SUCCESS_URL'),
+                cancel_url=config('STRIPE_CANCEL_URL'),
                 customer_email=email
-            )
-            print({
-                "status": "success",
-                "checkout_url": session.url,
-            }
             )
 
             return {
@@ -79,12 +74,12 @@ class StripeService:
 
             # Extract payment details
             customer_email = session.get("customer_email")
-            amount_total = session.get("amount_total")  # Amount in cents
+            amount_total = session.get("amount_total")
 
             return {
                 "session_id": session_id,
                 "customer_email": customer_email,
-                "amount_total": amount_total / 100,  # Convert cents to major currency unit
+                "amount_total": amount_total / 100,
             }
         except st.error.StripeError as e:
             raise HTTPException(status_code=500, detail=f"Stripe API error: {e.user_message or str(e)}")

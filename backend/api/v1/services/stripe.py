@@ -75,7 +75,7 @@ class StripeService:
             # Extract payment details
             customer_email = session.get("customer_email")
             amount_total = session.get("amount_total")
-            print(session)
+
             return {
                 "session_id": session_id,
                 "customer_email": customer_email,

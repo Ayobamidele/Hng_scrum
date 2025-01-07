@@ -38,13 +38,13 @@ class StripeService:
                             "product_data": {
                                 "name": "Donation for MKE - Verein",
                             },
-                            "unit_amount": amount_in_smallest_unit,  
+                            "unit_amount": amount_in_smallest_unit,
                         },
                         "quantity": 1,
                     }
                 ],
                 submit_type="donate",
-                mode="payment",  
+                mode="payment",
                 success_url=config('STRIPE_SUCCESS_URL'),
                 cancel_url=config('STRIPE_CANCEL_URL'),
                 customer_email=email
@@ -60,7 +60,7 @@ class StripeService:
                 status_code=500,
                 detail=f"An error occurred: {str(e)}"
             )
-    
+
     def handle_success(session_id: str):
         """
         Process the successful payment session.
@@ -84,5 +84,5 @@ class StripeService:
         except st.error.StripeError as e:
             raise HTTPException(status_code=500, detail=f"Stripe API error: {e.user_message or str(e)}")
 
-        
+
 stripe_service = StripeService()

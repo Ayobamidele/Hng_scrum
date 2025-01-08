@@ -4,6 +4,7 @@ from unittest.mock import patch
 from api.utils import get_user_currency_from_ip
 from api.v1.routes import stripe_donation
 
+
 client = TestClient(stripe_donation)
 
 # Mock the create_checkout_session function
@@ -70,7 +71,7 @@ def test_create_donation_session(mock_create_checkout_session, mock_success_resp
 
         # Simulate the request to the /stripe/donate endpoint
         response = client.post("/stripe/donate", json=payload)
-        
+
         # Assert the response is successful
         assert response.status_code == 200
         # Update the expected call here to match the actual logic

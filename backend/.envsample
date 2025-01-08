@@ -1,5 +1,9 @@
+#ENVIRONMENT 
+
+ENVIRONMENT=development
 stripe_secret_key=
 stripe_publishable_key=
+
 
 # development OR production
 DB_USER=
@@ -11,3 +15,8 @@ DB_URL=postgresql://username:password@localhost:5432/test
 
 # 'sqlite' or 'postgresql' for development and 'postgresql' for production
 DB_TYPE=sqlite
+
+# Bitpay configuration
+BITPAY_API_TOKEN=
+NOTIFICATION_URL=
+NOTIFICATION_EMAIL=

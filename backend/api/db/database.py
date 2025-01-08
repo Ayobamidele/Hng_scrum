@@ -32,7 +32,7 @@ def get_db_engine(test_mode: bool = False):
     return create_engine(DATABASE_URL)
 
 
-engine = get_db_engine(True)
+engine = get_db_engine()
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

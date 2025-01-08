@@ -20,7 +20,7 @@ def create_tables():
 
 
 
-create_tables()
+# create_tables()
 app = FastAPI(title=settings.PROJECT_NAME,version=settings.PROJECT_VERSION)
 app.include_router(api_version_one)
 

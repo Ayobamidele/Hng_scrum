@@ -8,8 +8,8 @@ stripe_donation = APIRouter(prefix="/stripe", tags=["Stripe"])
 
 
 @stripe_donation.post("/donate")
-async def create_donation_session_endpoint(donation: DonationRequest):
-    session_info = stripe_service.create_checkout_session(donation.amount, get_user_currency_from_ip(), donation.email)   
+async def create_donation_session_endpoint(donation: DonationRequest, request: Request):
+    session_info = stripe_service.create_checkout_session(donation.amount, get_user_currency_from_ip(request), donation.email)   
     return success_response(
         200,
         "Donation Session Created Successful",

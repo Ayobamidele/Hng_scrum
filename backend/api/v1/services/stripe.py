@@ -82,6 +82,7 @@ class StripeService:
                 "amount_total": amount_total / 100,
             }
         except st.error.StripeError as e:
+            print(e)
             raise HTTPException(status_code=500, detail=f"Stripe API error: {e.user_message or str(e)}")
 
         

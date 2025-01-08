@@ -69,18 +69,9 @@ class StripeService:
             raise HTTPException(status_code=400, detail="Session ID is required.")
 
         try:
-            # Retrieve the Stripe Checkout Session
-            session = st.checkout.Session.retrieve(session_id)
-
-            # Extract payment details
-            customer_email = session.get("customer_email")
-            amount_total = session.get("amount_total")
-            print(session)
-            return {
-                "session_id": session_id,
-                "customer_email": customer_email,
-                "amount_total": amount_total / 100,
-            }
+            payment_session = st.checkout.Session.retrieve(session_id)
+            payment_session["amount_total"] = payment_session["amount_total"] / 100
+            return payment_session
         except st.error.StripeError as e:
             raise HTTPException(status_code=500, detail=f"Stripe API error: {e.user_message or str(e)}")
 

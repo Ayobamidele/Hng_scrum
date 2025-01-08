@@ -1,5 +1,5 @@
 import requests
-
+from fastapi import Request
 
 country_to_currency = {
     'AF': 'afn',  # Afghanistan

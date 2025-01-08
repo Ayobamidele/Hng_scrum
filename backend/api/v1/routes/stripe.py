@@ -17,7 +17,7 @@ async def create_donation_session_endpoint(donation: DonationRequest, request: R
     )
 
 
-@stripe_donation.get("/success/")
+@stripe_donation.get("/success")
 async def success(request: Request):
     """
     Handle successful payment completion.
@@ -30,7 +30,7 @@ async def success(request: Request):
         response
     )
 
-@stripe_donation.get("/cancel/")
+@stripe_donation.get("/cancel")
 async def cancel():
     """
     Handle payment cancellation by the user.

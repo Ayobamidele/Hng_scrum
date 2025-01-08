@@ -61,7 +61,7 @@ class StripeService:
                 detail=f"An error occurred: {str(e)}"
             )
     
-    def handle_success(session_id: str):
+    def handle_success(self, session_id: str):
         """
         Process the successful payment session.
         """

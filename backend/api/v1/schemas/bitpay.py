@@ -7,8 +7,9 @@ from api.v1.schemas.base_schema import ResponseBase
 
 class CreateInvoice(BaseModel):
     """Create invoice input"""
-    price: float
+    amount: float
     currency: str = "USD"
+    email: str
 
 
 class CreateInvoiceResponse(ResponseBase):

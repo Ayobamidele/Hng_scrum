@@ -80,7 +80,7 @@ def test_create_donation_session(mock_create_checkout_session, mock_success_resp
 # Test for /success/ endpoint
 def test_success_endpoint(mock_handle_success, mock_success_response):
     session_id = "cs_test_a1b2c3d4"
-    response = client.get(f"/stripe/success/?session_id={session_id}")
+    response = client.get(f"/stripe/success?session_id={session_id}")
 
     assert response.status_code == 200
     mock_handle_success.assert_called_once_with(session_id)
@@ -88,6 +88,6 @@ def test_success_endpoint(mock_handle_success, mock_success_response):
 
 # Test for /cancel/ endpoint
 def test_cancel_endpoint(mock_success_response):
-    response = client.get("/stripe/cancel/")
+    response = client.get("/stripe/cancel")
 
     assert response.status_code == 200

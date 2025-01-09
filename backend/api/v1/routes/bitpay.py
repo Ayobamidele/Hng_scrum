@@ -22,7 +22,9 @@ def create_invoice(req: CreateInvoice, request: Request):
     """Create a Bitpay invoice"""
     try:
         invoice = bitpay_service.create_invoice(
-            req, get_user_currency_from_ip(request))
+            req,
+            get_user_currency_from_ip(request)
+        )
 
         return success_response(
             status_code=status.HTTP_200_OK,

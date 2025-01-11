@@ -204,8 +204,10 @@ def get_user_currency_from_ip(request: Request):
     """
     This function retrieves the user's currency based on their IP address.
     It sends a request to an external API to determine the user's country,
-    then uses a predefined dictionary to map the country to its corresponding currency.
-    If the country is not found in the dictionary, it defaults to 'US' currency.
+    then uses a predefined dictionary to map the country to its corresponding
+     currency.
+    If the country is not found in the dictionary, it defaults to 'US'
+     currency.
 
     Parameters:
     None
@@ -214,7 +216,7 @@ def get_user_currency_from_ip(request: Request):
     str: The user's currency code in uppercase.
     """
     client_host = request.client.host
-    forwarded_for = request.headers.get("x-forwarded-for")    
+    forwarded_for = request.headers.get("x-forwarded-for")
     ip_address = forwarded_for.split(",")[0] if forwarded_for else client_host
     response = requests.get(f'https://api.country.is/{ip_address}')
     country = response.json()['country']

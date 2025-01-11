@@ -17,12 +17,12 @@ class BitpayService:
             Environment.TEST if settings.ENV == "dev" else Environment.PROD
         )
 
-    def create_invoice(self, data: CreateInvoice):
+    def create_invoice(self, data: CreateInvoice, currency: str):
         """Create a donation invoice"""
         invoice = Invoice()
         invoice.token = settings.BITPAY_API_TOKEN
         invoice.price = data.amount
-        invoice.currency = data.currency
+        invoice.currency = currency
         invoice.notification_email = settings.NOTIFICATION_EMAIL
         invoice.notification_url = settings.NOTIFICATION_URL
 

@@ -21,16 +21,27 @@ def mock_create_invoice():
         mock.return_value = invoice_mock
         yield mock
 
+@pytest.fixture
+def mock_get_current_user_currency():
+    """
+    Mock the get_user_currency_from_ip function.
+    """
+    with patch("api.utils.ip.get_user_currency_from_ip") as mock_get_currency:
+        with patch("requests.get") as mock_get:
+            mock_response = Mock()
+            mock_response.json.return_value = {"country": "US"}
+            mock_get.return_value = mock_response
+            mock_get_currency.return_value = "USD"
+            yield mock_get_currency
 
-def test_create_invoice(mock_create_invoice):
+
+def test_create_invoice(mock_create_invoice, mock_get_current_user_currency):
     payload = {
         "amount": 20,
-        "currency": "usd",
         "email": "donor@example.com",
     }
 
     response = client.post("/bitpay", json=payload)
     assert response.status_code == 200
     mock_create_invoice.assert_called_once_with(
-        CreateInvoice(amount=20, currency="usd", email="donor@example.com"))
-
+        CreateInvoice(amount=20, email="donor@example.com"), "USD")

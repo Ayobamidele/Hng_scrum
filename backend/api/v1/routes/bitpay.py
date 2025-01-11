@@ -3,7 +3,8 @@
 """Bitpay API donation routes"""
 
 
-from fastapi import APIRouter, status
+from fastapi import APIRouter, Request, status
+from api.utils.ip import get_user_currency_from_ip
 
 from api.utils.response import success_response
 from api.v1.schemas.bitpay import CreateInvoice, CreateInvoiceResponse
@@ -17,10 +18,13 @@ bitpay_donation = APIRouter(prefix="/bitpay", tags=["Bitpay", "Donation"])
     response_model=CreateInvoiceResponse,
     status_code=status.HTTP_200_OK
 )
-def create_invoice(req: CreateInvoice):
+def create_invoice(req: CreateInvoice, request: Request):
     """Create a Bitpay invoice"""
     try:
-        invoice = bitpay_service.create_invoice(req)
+        invoice = bitpay_service.create_invoice(
+            req,
+            get_user_currency_from_ip(request)
+        )
 
         return success_response(
             status_code=status.HTTP_200_OK,

@@ -8,7 +8,6 @@ from api.v1.schemas.base_schema import ResponseBase
 class CreateInvoice(BaseModel):
     """Create invoice input"""
     amount: PositiveFloat
-    currency: str = "USD"
     email: EmailStr
 
 

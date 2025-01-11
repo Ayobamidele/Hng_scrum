@@ -67,7 +67,7 @@ class StripeService:
             )
     
 
-    def handle_success(self, self, session_id: str):
+    def handle_success(self, session_id: str):
         """
         Process the successful payment session.
         """

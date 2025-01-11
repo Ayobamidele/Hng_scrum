@@ -1,5 +1,7 @@
 import requests
 from fastapi import Request
+from functools import lru_cache
+
 
 country_to_currency = {
     'AF': 'afn',  # Afghanistan
@@ -200,17 +202,42 @@ country_to_currency = {
 
 
 
-def get_user_currency_from_ip(request: Request):
+@lru_cache(maxsize=100)
+def fetch_country_from_ip(ip_address: str) -> str:
+    """
+    Fetches the country code based on the IP address using an external API.
+    If the IP address is a localhost address, the URL won't include the IP.
+    Caches the result to avoid redundant external requests for the same IP.
+
+    Parameters:
+    - ip_address (str): The IP address of the client making the request.
+
+    Returns:
+    str: The country code associated with the IP address or 'US' in case of failure.
+    """
+    localhost_ips = {'127.0.0.1', 'localhost', '::1'}
+
+    url = 'https://api.country.is' if ip_address in localhost_ips else f'https://api.country.is/{ip_address}'
+
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        country = response.json().get('country', 'US')
+        return country
+    except requests.RequestException:
+        return 'US'
+
+
+
+def get_user_currency_from_ip(request: Request) -> str:
     """
     This function retrieves the user's currency based on their IP address.
     It sends a request to an external API to determine the user's country,
-    then uses a predefined dictionary to map the country to its corresponding
-     currency.
-    If the country is not found in the dictionary, it defaults to 'US'
-     currency.
+    then uses a predefined dictionary to map the country to its corresponding currency.
+    If the country is not found in the dictionary, it defaults to 'USD'.
 
     Parameters:
-    None
+    - request: The FastAPI Request object, which provides client and header information.
 
     Returns:
     str: The user's currency code in uppercase.
@@ -218,8 +245,9 @@ def get_user_currency_from_ip(request: Request):
     client_host = request.client.host
     forwarded_for = request.headers.get("x-forwarded-for")
     ip_address = forwarded_for.split(",")[0] if forwarded_for else client_host
-    response = requests.get(f'https://api.country.is/{ip_address}')
-    country = response.json()['country']
-    return country_to_currency.get(country, 'US').upper()
+    country = fetch_country_from_ip(ip_address)    
+    currency = country_to_currency.get(country, 'USD').upper()
+
+    return currency
 
 

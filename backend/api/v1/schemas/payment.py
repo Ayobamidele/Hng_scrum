@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from decimal import Decimal
 from datetime import datetime
 from enum import Enum
@@ -25,3 +25,6 @@ class Payment(BaseModel):
     payment_type: PaymentMethodEnum  # Restrict to valid payment methods
     currency: str  # Currency code (e.g., USD, NGN)
     created_at: datetime  # Timestamp for when the payment was created
+    project: str # Project
+    project_title: str # Title
+    

@@ -1,14 +1,5 @@
-__pycache__/
-
-*.db
-.env
-# venv
-venv/
-
 .venv/
 __pycache__/
 
 *.db
 .env
-
-.pytest_cache/

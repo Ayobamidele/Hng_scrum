@@ -16,10 +16,11 @@ def get_db_engine(test_mode: bool = False):
     print(DATABASE_URL, DB_TYPE)
     if DB_TYPE == "sqlite" or test_mode:
         BASE_PATH = f"sqlite:///{BASE_DIR}"
+        print(BASE_PATH, DB_TYPE)
         DATABASE_URL = BASE_PATH + "/"
 
         if test_mode:
-            DATABASE_URL = BASE_PATH + "test.db"
+            DATABASE_URL = BASE_PATH + "/test.db"
 
             return create_engine(
                 DATABASE_URL, connect_args={"check_same_thread": False}

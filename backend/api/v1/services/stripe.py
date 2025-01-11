@@ -1,17 +1,15 @@
 import stripe as st
-from api.utils import settings
+from decouple import config
 from fastapi import HTTPException
 from decimal import Decimal
 from typing import Dict
 
 
-
+st.api_key = config("STRIPE_SECRET_KEY")
 
 class StripeService:
-    def __init__(self):
-        st.api_key = settings.STRIPE_SECRET_KEY
-        
-    def create_checkout_session(self, amount: Decimal, currency: str, email: str, project_id:str) -> Dict:
+
+    def create_checkout_session(self, amount: Decimal, currency: str, email: str) -> Dict:
         try:
             amount_in_smallest_unit = int(amount * 100)
 
@@ -38,20 +36,17 @@ class StripeService:
                         "price_data": {
                             "currency": currency,
                             "product_data": {
-                                "name": "Donation to MKE - Verein",
+                                "name": "Donation for MKE - Verein",
                             },
-                            "unit_amount": amount_in_smallest_unit,
+                            "unit_amount": amount_in_smallest_unit,  
                         },
                         "quantity": 1,
                     }
                 ],
-                metadata={
-                    "project_id": F"PROJECT_{project_id}"
-                },
                 submit_type="donate",
-                mode="payment",
-                success_url=settings.STRIPE_SUCCESS_URL,
-                cancel_url=settings.STRIPE_CANCEL_URL,
+                mode="payment",  
+                success_url=config('STRIPE_SUCCESS_URL'),
+                cancel_url=config('STRIPE_CANCEL_URL'),
                 customer_email=email
             )
 
@@ -66,20 +61,28 @@ class StripeService:
                 detail=f"An error occurred: {str(e)}"
             )
     
-
-    def handle_success(self, session_id: str):
+    def handle_success(session_id: str):
         """
         Process the successful payment session.
         """
         if not session_id:
             raise HTTPException(status_code=400, detail="Session ID is required.")
-            
+
         try:
-            payment_session = st.checkout.Session.retrieve(session_id)
-            payment_session["amount_total"] = payment_session["amount_total"] / 100
-            return payment_session
+            # Retrieve the Stripe Checkout Session
+            session = st.checkout.Session.retrieve(session_id)
+
+            # Extract payment details
+            customer_email = session.get("customer_email")
+            amount_total = session.get("amount_total")
+            print(session)
+            return {
+                "session_id": session_id,
+                "customer_email": customer_email,
+                "amount_total": amount_total / 100,
+            }
         except st.error.StripeError as e:
             raise HTTPException(status_code=500, detail=f"Stripe API error: {e.user_message or str(e)}")
 
-
+        
 stripe_service = StripeService()
